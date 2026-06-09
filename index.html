@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Periodic Table</title>
+  <meta name="description" content="A modern, interactive periodic table with all 118 elements. Search, filter, compare, and explore chemical elements." />
+  <meta property="og:title" content="Interactive Periodic Table" />
+  <meta property="og:description" content="Explore all 118 chemical elements with detailed information, search, filters, and comparison tools." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div class="loader-atom">
+        <div class="loader-nucleus"></div>
+        <div class="loader-orbit orbit1"><div class="loader-electron"></div></div>
+        <div class="loader-orbit orbit2"><div class="loader-electron"></div></div>
+        <div class="loader-orbit orbit3"><div class="loader-electron"></div></div>
+      </div>
+      <div class="loader-text">Loading Elements<span class="dots">...</span></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">⚛</span>
+        <span class="logo-text">PeriodicLab</span>
+      </div>
+    </div>
+    <div class="header-center">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="search-input" class="search-input" placeholder="Search by name, symbol, number, or category..." autocomplete="off" />
+        <kbd class="search-kbd">Ctrl+F</kbd>
+        <div id="search-suggestions" class="search-suggestions hidden"></div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button id="random-btn" class="btn btn-outline" title="Discover a random element">
+        🎲 Random
+      </button>
+      <button id="compare-toggle" class="btn btn-outline" title="Compare elements">
+        ⚖ Compare
+      </button>
+      <button id="favorites-toggle" class="btn btn-outline" title="View favorites">
+        ★ Favorites
+      </button>
+      <button id="theme-toggle" class="btn btn-icon" title="Toggle theme" aria-label="Toggle dark/light mode">
+        <span id="theme-icon">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Filters & Stats -->
+    <div class="controls-bar">
+      <div class="filter-buttons" id="filter-buttons" role="group" aria-label="Filter by category">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="alkali-metal">Alkali Metals</button>
+        <button class="filter-btn" data-cat="alkaline-earth-metal">Alkaline Earth</button>
+        <button class="filter-btn" data-cat="transition-metal">Transition Metals</button>
+        <button class="filter-btn" data-cat="post-transition-metal">Post-Transition</button>
+        <button class="filter-btn" data-cat="metalloid">Metalloids</button>
+        <button class="filter-btn" data-cat="nonmetal">Nonmetals</button>
+        <button class="filter-btn" data-cat="halogen">Halogens</button>
+        <button class="filter-btn" data-cat="noble-gas">Noble Gases</button>
+        <button class="filter-btn" data-cat="lanthanide">Lanthanides</button>
+        <button class="filter-btn" data-cat="actinide">Actinides</button>
+      </div>
+      <div class="stats-mini" id="stats-mini"></div>
+    </div>
+
+    <!-- Periodic Table Grid -->
+    <div class="table-container">
+      <div class="periodic-table" id="periodic-table"></div>
+      <div class="lanthanide-actinide-gap"></div>
+      <div class="periodic-table lanthanide-actinide-rows" id="la-ac-table"></div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend" id="legend"></div>
+
+    <!-- Quick Stats Panel -->
+    <div class="stats-panel glass-card" id="stats-panel"></div>
+
+  </main>
+
+  <!-- Element Detail Modal -->
+  <div id="element-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-element-name">
+    <div class="modal glass-card">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      <div class="modal-header" id="modal-header">
+        <div class="modal-symbol-block">
+          <div class="modal-num" id="modal-num"></div>
+          <div class="modal-sym" id="modal-sym"></div>
+          <div class="modal-mass" id="modal-mass"></div>
+        </div>
+        <div class="modal-title-block">
+          <h2 id="modal-element-name"></h2>
+          <div class="modal-category" id="modal-category"></div>
+          <div class="modal-state" id="modal-state"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline fav-btn" id="modal-fav-btn">☆ Add to Favorites</button>
+          <button class="btn btn-outline" id="modal-compare-btn">⚖ Compare</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-tabs">
+          <button class="tab-btn active" data-tab="properties">Properties</button>
+          <button class="tab-btn" data-tab="config">Configuration</button>
+          <button class="tab-btn" data-tab="uses">Uses & Facts</button>
+        </div>
+        <div class="tab-content active" id="tab-properties">
+          <div class="props-grid" id="modal-props"></div>
+        </div>
+        <div class="tab-content" id="tab-config">
+          <div class="config-block" id="modal-config"></div>
+        </div>
+        <div class="tab-content" id="tab-uses">
+          <div class="uses-block" id="modal-uses"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Panel -->
+  <div id="compare-panel" class="compare-panel glass-card hidden">
+    <div class="compare-header">
+      <h3>⚖ Element Comparison</h3>
+      <div class="compare-actions">
+        <button class="btn btn-outline" id="export-compare-btn">📤 Export JSON</button>
+        <button class="btn btn-icon close-btn" id="compare-close">✕</button>
+      </div>
+    </div>
+    <div class="compare-slots">
+      <div class="compare-slot" id="slot-a">
+        <div class="slot-placeholder">Click an element to compare</div>
+      </div>
+      <div class="compare-vs">VS</div>
+      <div class="compare-slot" id="slot-b">
+        <div class="slot-placeholder">Click an element to compare</div>
+      </div>
+    </div>
+    <div class="compare-table-wrap" id="compare-table-wrap"></div>
+  </div>
+
+  <!-- Favorites Panel -->
+  <div id="favorites-panel" class="side-panel glass-card hidden">
+    <div class="side-panel-header">
+      <h3>★ Favorites</h3>
+      <div class="fav-actions">
+        <button class="btn btn-outline" id="export-fav-btn">📤 Export JSON</button>
+        <button class="btn btn-icon close-btn" id="favorites-close">✕</button>
+      </div>
+    </div>
+    <div id="favorites-list" class="favorites-list"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
