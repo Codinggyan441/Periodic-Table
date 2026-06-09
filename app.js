@@ -139,25 +139,6 @@ const CATEGORIES = {
   'actinide':             { label:'Actinides',             color:'var(--c-actinide)' },
 };
 
-/* ── Educational Facts ── */
-const EDU_FACTS = [
-  '🔬 The periodic table was created by Dmitri Mendeleev in 1869. He left gaps for undiscovered elements — and was proven right!',
-  '⚡ Electrons occupy orbitals defined by 4 quantum numbers: principal (n), angular (l), magnetic (m), and spin (s).',
-  '🌌 Hydrogen and Helium together make up about 99% of all visible matter in the universe.',
-  '🧪 Noble gases were considered completely inert until 1962 when XePtF₆ (xenon hexafluoroplatinate) was first synthesized.',
-  '💡 The elements from Hassium (108) to Oganesson (118) have all been created after 1984 using particle accelerators.',
-  '🔩 Osmium (Os) is the densest naturally occurring element at 22.59 g/cm³ — more than twice the density of lead.',
-  '🌡️ Tungsten (W) has the highest melting point of any element at 3,422°C (6,192°F).',
-  '🔋 Lithium-ion batteries, which power most modern electronics and EVs, rely on the element lithium (Li, #3).',
-  '⚗️ Carbon (C) is the basis of all known life on Earth and forms more compounds than all other elements combined.',
-  '🌍 Oxygen (O) is the most abundant element in Earth\'s crust by mass, making up about 46% of it.',
-  '✨ Gold (Au) is so malleable that 1 gram can be beaten into a sheet 1 square meter in area.',
-  '🧬 The human body is made primarily of Oxygen (65%), Carbon (18%), Hydrogen (10%), and Nitrogen (3%).',
-  '🔴 Mercury (Hg) and Bromine (Br) are the only two elements that are liquid at standard room temperature.',
-  '🔭 Helium was discovered in the Sun before it was found on Earth — its name comes from "Helios" (Greek for Sun).',
-  '⚛️ The nucleus of an atom is incredibly dense — if an atom were the size of a football stadium, the nucleus would be the size of a marble.',
-];
-
 /* ── App State ── */
 const state = {
   filter: 'all',
